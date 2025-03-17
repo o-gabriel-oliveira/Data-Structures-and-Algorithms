@@ -1,6 +1,6 @@
 package data_structures.stack
 
-class ArrayStack<T>(private var capacity: Int = 2): Stack<T> {
+class ArrayStack<T>(private var capacity: Int = 2) : Stack<T> {
     private var size: Int = 0
     private var elements: Array<Any?> = arrayOfNulls(capacity)
 
@@ -24,8 +24,13 @@ class ArrayStack<T>(private var capacity: Int = 2): Stack<T> {
     override fun pop(): T? {
         if (isEmpty())
             return null
+
         val element = elements[--size] as T
         this.elements[size] = null
+
+        if (size <= capacity / 4)
+            decreaseCapacity()
+
         return element
     }
 
@@ -42,5 +47,12 @@ class ArrayStack<T>(private var capacity: Int = 2): Stack<T> {
 
     override fun size(): Int {
         return size
+    }
+
+    override fun toString(): String {
+        var elements: String = ""
+        for (index in 0..<size)
+            elements += if (index < size - 1) "${this.elements[index]}, " else this.elements[index]
+        return elements
     }
 }
